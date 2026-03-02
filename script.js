@@ -1,5 +1,5 @@
-// Adjust this if your backend is hosted elsewhere
-const BACKEND_BASE_URL = "http://13.233.179.29:3000";
+// Backend now same Vercel domain → no external URL needed
+const BACKEND_BASE_URL = "";
 
 const form = document.getElementById("dowry-form");
 const fileInput = document.getElementById("photo-input");
@@ -50,7 +50,6 @@ form.addEventListener("submit", (e) => {
     return;
   }
 
-  // Show modal
   pendingFile = file;
   modalPasswordInput.value = "";
   passwordModal.classList.remove("hidden");
@@ -73,7 +72,6 @@ modalSubmitBtn.addEventListener("click", () => {
   sendToBackend(pendingFile, password);
 });
 
-// Allow entering with "Enter" key in the modal input
 modalPasswordInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
     e.preventDefault();
@@ -83,7 +81,6 @@ modalPasswordInput.addEventListener("keypress", (e) => {
 
 async function sendToBackend(file, password) {
   const formData = new FormData();
-  // Must match backend field name: upload.single("face")
   formData.append("face", file);
   formData.append("password", password);
 
@@ -92,7 +89,8 @@ async function sendToBackend(file, password) {
   setResult("");
 
   try {
-    const response = await fetch(`${BACKEND_BASE_URL}/calculate`, {
+    // 🔥 IMPORTANT: calling Vercel serverless backend
+    const response = await fetch(`/api/calculate`, {
       method: "POST",
       body: formData,
     });
@@ -105,6 +103,7 @@ async function sendToBackend(file, password) {
     }
 
     const data = await response.json();
+
     if (!data || !data.result) {
       setStatus("Got a weird response from server.", "error");
       setResult("");
@@ -113,6 +112,7 @@ async function sendToBackend(file, password) {
 
     setStatus("AI replied with a dowry joke:", "success");
     setResult(data.result);
+
   } catch (err) {
     console.error(err);
     setStatus(err.message || "Something went wrong, please try again.", "error");
@@ -122,5 +122,3 @@ async function sendToBackend(file, password) {
     pendingFile = null;
   }
 }
-
-
