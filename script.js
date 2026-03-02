@@ -1,5 +1,5 @@
 // Adjust this if your backend is hosted elsewhere
-const BACKEND_BASE_URL = "http://localhost:3000";
+const BACKEND_BASE_URL = "http://13.233.179.29:3000";
 
 const form = document.getElementById("dowry-form");
 const fileInput = document.getElementById("photo-input");
