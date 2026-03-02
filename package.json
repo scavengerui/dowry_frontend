@@ -1,0 +1,11 @@
+{
+  "name": "dowry_frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static frontend for the Dowry Calculator backend",
+  "scripts": {
+    "serve": "npx serve ."
+  }
+}
+
+
